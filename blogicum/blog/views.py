@@ -17,32 +17,35 @@ def index(request):
     return render(request, template, context)
 
 
-def post_detail(request, pk):
+def post_detail(request, id):
+
     post = get_object_or_404(
-        Post.objects.all().filter(
-            Q(is_published=True)
-            & Q(category__is_published=True)
-            & Q(pub_date__lte=dt.now())
-        ),
-        (Q(is_published=False)
-         | Q(pub_date__gte=dt.now())
-         | Q(category__is_published=False)) & (Q(pk=pk))
-    )
+    Post.objects.all().filter(
+             Q(is_published=True)
+             & Q(category__is_published=True)
+             & Q(pub_date__lte=dt.now())
+         ),
+         (Q(is_published=True)
+          | Q(pub_date__gte=dt.now())
+          | Q(category__is_published=False)) & (Q(id=id))
+     )
     # Остальная часть вашего представления (view) остается без изменений
     template = 'blog/detail.html'
     context = {'post': post}
     return render(request, template, context)
 
 
-def category_posts(request):
+def category_posts(request, category_slug):
     template = 'blog/category.html'
-    category = get_object_or_404(
-        Post.objects.all().filter(
-            Q(is_published=True)
-            & Q(category__is_published=True)
-            & Q(pub_date__lte=dt.now())
-        ).order_by('pub_date')[0:5],
-        category__is_published=False
-    )
-    context = {'category': category}
+
+    posts = Post.objects.filter(
+        Q(is_published=True)
+        & Q(category__is_published=True)
+        & Q(pub_date__lte=dt.now())
+        & Q(category__slug=category_slug)
+    ).order_by('pub_date')[0:10]
+
+    category = get_object_or_404(Category, slug=category_slug, is_published=True)
+
+    context = {'category': category, 'post_list': posts}
     return render(request, template, context)
