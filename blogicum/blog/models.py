@@ -2,7 +2,6 @@ from django.db import models
 from django.contrib.auth import get_user_model
 from core.models import BaseModel
 
-
 User = get_user_model()
 TITLE_LENGTH = 256
 
@@ -25,7 +24,9 @@ class Category(BaseModel):
 
 
 class Location(BaseModel):
-    name = models.CharField(max_length=TITLE_LENGTH, verbose_name='Название места')
+    name = models.CharField(
+        max_length=TITLE_LENGTH,
+        verbose_name='Название места')
 
     class Meta:
         verbose_name = 'местоположение'

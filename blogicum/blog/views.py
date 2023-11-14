@@ -10,7 +10,7 @@ def suitable_posts():
         is_published=True,
         category__is_published=True,
         pub_date__lte=dt.now()
-     )
+    )
 
 
 def index(request):
