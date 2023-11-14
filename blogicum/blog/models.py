@@ -3,8 +3,8 @@ from django.contrib.auth import get_user_model
 from core.models import BaseModel
 
 User = get_user_model()
-TITLE_LENGTH = 256
 
+TITLE_LENGTH = 256
 
 class Category(BaseModel):
     title = models.CharField(max_length=TITLE_LENGTH, verbose_name='Заголовок')
