@@ -1,14 +1,14 @@
 from datetime import datetime as dt
 
 from django.shortcuts import get_object_or_404, render
-from django.db.models import Q
 
 from blog.models import Post
 from blog.models import Category
 
 
 def suitable_posts():
-    return Post.objects.select_related('category', 'location', 'author').filter(
+    return Post.objects.select_related(
+        'category', 'location', 'author').filter(
         is_published=True,
         category__is_published=True,
         pub_date__lte=dt.now()
