@@ -1,9 +1,11 @@
 from django.db import models
 from django.contrib.auth import get_user_model
+
 from core.models import BaseModel
 
+
 User = get_user_model()
-TITLE_LENGTH = 256
+TITLE_LENGTH = NAME_LENGTH = 256
 
 
 class Category(BaseModel):
@@ -25,7 +27,7 @@ class Category(BaseModel):
 
 class Location(BaseModel):
     name = models.CharField(
-        max_length=TITLE_LENGTH,
+        max_length=NAME_LENGTH,
         verbose_name='Название места')
 
     class Meta:
@@ -47,20 +49,20 @@ class Post(BaseModel):
         User,
         on_delete=models.CASCADE,
         verbose_name='Автор публикации',
-        related_name='authors'
+        related_name='posts'
     )
     location = models.ForeignKey(
         Location,
         on_delete=models.SET_NULL,
         null=True,
-        related_name='locations',
+        related_name='posts',
         verbose_name='Местоположение'
     )
     category = models.ForeignKey(
         Category,
         on_delete=models.SET_NULL,
         null=True,
-        related_name='categories',
+        related_name='posts',
         verbose_name='Категория',
     )
 
